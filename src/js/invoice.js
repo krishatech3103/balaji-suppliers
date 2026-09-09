@@ -670,29 +670,35 @@ export function initInvoiceModule(getCurrentLang) {
     reader.readAsText(file);
   }
 
-  // Modal helpers
+  // Modal helpers (Popups floating in center of screen)
   function openModal(modalEl) {
     if (!modalEl) return;
+    modalEl.classList.add('active');
     modalEl.classList.add('visible');
     modalEl.setAttribute('aria-hidden', 'false');
   }
 
   function closeModal(modalEl) {
     if (!modalEl) return;
+    modalEl.classList.remove('active');
     modalEl.classList.remove('visible');
     modalEl.setAttribute('aria-hidden', 'true');
   }
 
   // Popup Triggers & Closes
   if (btnOwnerHistoryPopup) {
-    btnOwnerHistoryPopup.addEventListener('click', () => {
+    btnOwnerHistoryPopup.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       renderHistoryList(searchInput?.value || '');
       openModal(ownerHistoryModal);
     });
   }
 
   if (btnOwnerBackupPopup) {
-    btnOwnerBackupPopup.addEventListener('click', () => {
+    btnOwnerBackupPopup.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       openModal(ownerBackupModal);
     });
   }

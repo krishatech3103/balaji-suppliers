@@ -41,7 +41,6 @@ export function initOwnerAuth(onOwnerLoginSuccess, getCurrentLang) {
   const attemptsEl = document.getElementById('owner-pin-attempts');
   const ownerOverlay = document.getElementById('owner-dashboard-overlay');
   const logoutBtn = document.getElementById('btn-owner-logout');
-  const closeDashboardBtn = document.getElementById('btn-owner-close');
 
   let logoTapCount = 0;
   let logoTapTimer = null;
@@ -258,20 +257,15 @@ export function initOwnerAuth(onOwnerLoginSuccess, getCurrentLang) {
     });
   }
 
-  // Close Dashboard button inside Owner Dashboard (returns to site without logout)
-  if (closeDashboardBtn) {
-    closeDashboardBtn.addEventListener('click', () => {
-      if (ownerOverlay) ownerOverlay.classList.remove('visible');
-    });
-  }
-
-  // Logout button inside Owner Dashboard (clears owner device persistence)
+  // Logout button inside Owner Dashboard (clears session and goes to Enter PIN page)
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
       localStorage.removeItem(STORAGE_KEYS.SESSION);
       sessionStorage.removeItem(STORAGE_KEYS.SESSION);
       localStorage.removeItem('bbms_owner_device');
       if (ownerOverlay) ownerOverlay.classList.remove('visible');
+      // Go directly to Enter PIN page, not the public website
+      openPinModal();
     });
   }
 }
