@@ -12,7 +12,7 @@ Runs 100% client-side with no backend or database required, fully deployable to 
 - **Location:** Tasgaon, Dist. Sangli, Maharashtra, India - 416312
 - **Phone / WhatsApp:** [+91 8484029427](tel:+918484029427)
 - **WhatsApp Link:** [https://wa.me/918484029427](https://wa.me/918484029427)
-- **UPI Payment ID:** `pujarisudip5@okaxis`
+- **UPI Number:** `7083330914` (ID: `pujarisudip5@okaxis`)
 - **Products (Sold per Brass):**
   1. Sand (वाळू - River Sand)
   2. Khadi / Crushed Aggregate (खडी - 10mm, 20mm, 40mm)
@@ -27,7 +27,7 @@ Runs 100% client-side with no backend or database required, fully deployable to 
 - Default language: **Marathi (मराठी)** for local customers; easily toggles to English.
 - Selection is remembered in `localStorage`.
 - Translates everything: navigation, hero copy, material descriptions, quotation builder, and WhatsApp prefill templates.
-- **Invoice Card:** Strictly formatted in **100% pure Marathi only** (`|| श्री दारेश्वर प्रसन्न ||`, `कच्चे बिल / डिलिव्हरी चालन`, etc.) regardless of website UI language.
+- **Invoice Card:** Strictly formatted in **100% pure Marathi only** (`|| श्री दारेश्वर प्रसन्न ||`, `इन्व्हॉइस / बिल (INVOICE)`, etc.) regardless of website UI language.
 - Native Devanagari typography with `Noto Sans Devanagari` via Google Fonts.
 
 ### 📋 Interactive Quotation Builder

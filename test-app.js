@@ -111,10 +111,10 @@ const indexHtml = fs.readFileSync(path.join(distDir, 'index.html'), 'utf-8');
 
 const checks = [
   { name: 'LocalBusiness JSON-LD schema', test: indexHtml.includes('"@type": "LocalBusiness"') },
-  { name: 'Updated phone number +918484029427', test: indexHtml.includes('+918484029427') && !indexHtml.includes('8484029472') },
-  { name: 'UPI ID pujarisudip5@okaxis', test: indexHtml.includes('pujarisudip5@okaxis') },
+  { name: 'Updated phone number +918484029427 (single, no duplicate)', test: indexHtml.includes('+91 8484029427') && !indexHtml.includes('8484029427 | 8484029427') },
+  { name: 'UPI number 7083330914', test: indexHtml.includes('7083330914') },
   { name: 'Mantra || श्री दारेश्वर प्रसन्न ||', test: indexHtml.includes('श्री दारेश्वर प्रसन्न') && !indexHtml.includes('महालक्ष्मी') },
-  { name: 'Pure Marathi invoice header', test: indexHtml.includes('कच्चे बिल / डिलिव्हरी चालन') },
+  { name: 'Professional Marathi invoice header (इन्व्हॉइस / बिल)', test: indexHtml.includes('इन्व्हॉइस / बिल (INVOICE)') && !indexHtml.includes('कच्चे बिल') },
   { name: 'Vehicle photo & fleet showcase (no specific vehicle number)', test: indexHtml.includes('hero-truck.webp') && indexHtml.includes('delivery-vehicle.webp') && !indexHtml.includes('MH 50 7410') },
   { name: 'Instagram visit button & link', test: indexHtml.includes('instagram.com/mr_s_u_d_y_a_0622') },
   { name: 'Custom domain balajisuppliers.krishatech.in canonical & SEO tags', test: indexHtml.includes('balajisuppliers.krishatech.in') && !indexHtml.includes('pages.dev') },

@@ -1772,22 +1772,31 @@ body.menu-open {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  font-size: 0.72rem;
+  gap: 12px;
   color: #475569;
 }
 
 .bill-terms {
-  max-width: 320px;
-  line-height: 1.3;
+  flex: 1;
+  font-size: 0.60rem;
+  line-height: 1.35;
+  color: #475569;
+}
+
+.bill-terms div {
+  white-space: nowrap;
+  margin-bottom: 2px;
 }
 
 .bill-signature-box {
   text-align: center;
   font-weight: 700;
   color: #0f172a;
-  padding-top: 30px;
+  font-size: 0.72rem;
+  padding-top: 26px;
   border-top: 1px dashed #64748b;
-  min-width: 150px;
+  min-width: 140px;
+  flex-shrink: 0;
 }
 
 /* --------------------------------------------------------------------------
