@@ -117,31 +117,55 @@ npm run preview
 
 ---
 
-## 5. Deploying to Cloudflare Pages
+## 5. Deploying to GitHub Pages (Custom Domain: `balajisuppliers.krishatech.in`)
+
+The project is pre-configured with a GitHub Actions workflow (`.github/workflows/deploy.yml`) and `CNAME` files for `balajisuppliers.krishatech.in`.
+
+### Step 1: Push Repository to GitHub
+```bash
+git remote add origin https://github.com/<your-username>/<your-repo-name>.git
+git push -u origin main
+```
+
+### Step 2: Enable GitHub Pages in GitHub Settings
+1. Go to your GitHub repository: **Settings** → **Pages**.
+2. Under **Build and deployment** → **Source**, select:
+   - **GitHub Actions** (Recommended — automatically runs `.github/workflows/deploy.yml` on every push).
+3. Under **Custom domain**:
+   - Verify `balajisuppliers.krishatech.in` is populated from the `CNAME` file.
+   - Check **Enforce HTTPS**.
+
+### Step 3: DNS Configuration for `balajisuppliers.krishatech.in`
+In your DNS management provider (for `krishatech.in`), add:
+- **Type:** `CNAME`
+- **Name / Host:** `balajisuppliers`
+- **Target / Value:** `<your-github-username>.github.io` (or your GitHub organization's GitHub Pages domain)
+- **TTL:** `Automatic` or `300`
+
+---
+
+## 6. Deploying to Cloudflare Pages (Alternative)
 
 The `dist/` directory is 100% static and requires zero server configuration.
 
-### Option A: Via Cloudflare Dashboard (Git Integration - Recommended)
+### Option A: Via Cloudflare Dashboard (Git Integration)
 1. Push your repository to GitHub or GitLab.
 2. Log in to the [Cloudflare Dashboard](https://dash.cloudflare.com/) and go to **Workers & Pages**.
 3. Click **Create Application** → **Pages** → **Connect to Git**.
 4. Select your repository.
 5. In **Build settings**, configure:
-   - **Framework preset:** `Vite` (or None)
+   - **Framework preset:** `Vite`
    - **Build command:** `npm run build`
    - **Build output directory:** `dist`
-6. Click **Save and Deploy**.
+6. Click **Save and Deploy**. Custom domain `balajisuppliers.krishatech.in` can be added under **Custom domains**.
 
 ### Option B: Direct Upload via Wrangler CLI
 ```bash
-# Install Wrangler globally if needed
-npm install -g wrangler
-
 # Build the project
 npm run build
 
 # Deploy the dist folder
-wrangler pages deploy dist --project-name=balaji-building-material
+npx wrangler pages deploy dist --project-name=balaji-building-material
 ```
 
 ---
