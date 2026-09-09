@@ -1051,47 +1051,46 @@ body.menu-open {
 }
 
 /* --------------------------------------------------------------------------
-   7. Floating WhatsApp Action Button (FAB)
+   7. Floating Direct Call Action Button (FAB)
    -------------------------------------------------------------------------- */
-.floating-wa-fab {
+.floating-call-fab {
   position: fixed;
   bottom: 24px;
   right: 24px;
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background-color: var(--wa-green);
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.45);
+  box-shadow: 0 4px 18px rgba(2, 132, 199, 0.45);
   z-index: 999;
   cursor: pointer;
-  transition: transform 0.2s ease, background-color 0.2s ease;
-  animation: pulseGlow 2.5s infinite;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: pulseCallGlow 2.5s infinite;
 }
 
-.floating-wa-fab:hover {
+.floating-call-fab:hover {
   transform: scale(1.1);
-  background-color: var(--wa-green-hover);
+  box-shadow: 0 6px 22px rgba(2, 132, 199, 0.6);
 }
 
-.floating-wa-fab svg {
-  width: 32px;
-  height: 32px;
-  fill: currentColor;
+.floating-call-fab svg {
+  width: 30px;
+  height: 30px;
 }
 
-@keyframes pulseGlow {
+@keyframes pulseCallGlow {
   0% {
-    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6);
+    box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.65);
   }
   70% {
-    box-shadow: 0 0 0 16px rgba(37, 211, 102, 0);
+    box-shadow: 0 0 0 16px rgba(2, 132, 199, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    box-shadow: 0 0 0 0 rgba(2, 132, 199, 0);
   }
 }
 
@@ -1294,6 +1293,7 @@ body.menu-open {
   position: sticky;
   top: 0;
   z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .owner-brand {
@@ -1307,31 +1307,85 @@ body.menu-open {
   font-size: 1.15rem;
 }
 
-.owner-tabs-nav {
+.owner-topbar-actions {
   display: flex;
+  align-items: center;
   gap: 0.5rem;
-  background-color: #ffffff;
-  padding: 0.5rem 1.5rem;
-  border-bottom: 1px solid var(--border-color);
-  position: sticky;
-  top: 54px;
-  z-index: 99;
+  flex-wrap: wrap;
 }
 
-.owner-tab-btn {
-  padding: 0.6rem 1.25rem;
-  border-radius: var(--radius-md);
-  border: none;
-  background: transparent;
+.btn-owner-nav {
+  background-color: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  padding: 0.42rem 0.85rem;
+  font-size: 0.85rem;
   font-weight: 700;
-  color: var(--text-muted);
+  border-radius: var(--radius-md);
   cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.btn-owner-nav:hover {
+  background-color: rgba(255, 255, 255, 0.22);
+  border-color: #ffffff;
+}
+
+/* Owner Popup Modals (History & Backup) */
+.owner-submodal {
+  z-index: 2600; /* Stays above owner-overlay (z-index 2500) */
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+.owner-submodal-card {
+  max-width: 920px;
+  width: min(94vw, 920px);
+  max-height: 88vh;
+  overflow-y: auto;
+  background: #ffffff;
+  border-radius: var(--radius-xl);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--border-color);
+  padding: 1.75rem;
+}
+
+.owner-submodal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 1rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1.5px solid var(--border-color);
+}
+
+.btn-close-submodal {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: all 0.2s ease;
 }
 
-.owner-tab-btn.active {
-  background-color: var(--primary-light);
-  color: var(--primary);
+.btn-close-submodal:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #dc2626;
+}
+
+.backup-submodal-card {
+  max-width: 540px;
 }
 
 .owner-main-content {
@@ -1433,6 +1487,17 @@ body.menu-open {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.inv-empty-state-box {
+  background-color: var(--bg-page);
+  border: 1.5px dashed #cbd5e1;
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 0.85rem;
 }
 
 .btn-add-inv-item {
@@ -2124,45 +2189,47 @@ body.menu-open {
     gap: 0.75rem;
   }
 
-  /* Floating WhatsApp FAB */
-  .floating-wa-fab {
+  /* Floating Direct Call FAB */
+  .floating-call-fab {
     bottom: 20px;
     right: 20px;
-    width: 52px;
-    height: 52px;
+    width: 54px;
+    height: 54px;
   }
 
-  .floating-wa-fab svg {
-    width: 28px;
-    height: 28px;
+  .floating-call-fab svg {
+    width: 26px;
+    height: 26px;
   }
 
   /* Owner Panel on Mobile */
   .owner-topbar {
-    padding: 0.75rem 1rem;
+    padding: 0.75rem 0.85rem;
+    flex-wrap: wrap;
+    gap: 0.65rem;
   }
 
   .owner-brand h2 {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
-  .owner-tabs-nav {
-    padding: 0.4rem 0.75rem;
+  .owner-topbar-actions {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 0.4rem;
     overflow-x: auto;
     white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    gap: 0.35rem;
+    padding-bottom: 2px;
   }
 
-  .owner-tabs-nav::-webkit-scrollbar {
-    display: none;
+  .btn-owner-nav {
+    padding: 0.35rem 0.65rem;
+    font-size: 0.8rem;
   }
 
-  .owner-tab-btn {
-    flex-shrink: 0;
-    padding: 0.45rem 0.85rem;
-    font-size: 0.85rem;
+  .owner-submodal-card {
+    padding: 1.15rem 0.85rem;
+    max-height: 85vh;
   }
 
   .owner-main-content {

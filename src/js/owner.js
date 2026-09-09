@@ -31,6 +31,7 @@ async function computeSha256(text) {
 }
 
 export function initOwnerAuth(onOwnerLoginSuccess, getCurrentLang) {
+  const brandHeaderTrigger = document.getElementById('brand-header-trigger');
   const footerTrigger = document.getElementById('footer-secret-trigger');
   const modal = document.getElementById('owner-auth-modal');
   const pinInput = document.getElementById('owner-pin-input');
@@ -40,13 +41,19 @@ export function initOwnerAuth(onOwnerLoginSuccess, getCurrentLang) {
   const attemptsEl = document.getElementById('owner-pin-attempts');
   const ownerOverlay = document.getElementById('owner-dashboard-overlay');
   const logoutBtn = document.getElementById('btn-owner-logout');
+  const closeDashboardBtn = document.getElementById('btn-owner-close');
 
-  let tapCount = 0;
-  let tapTimer = null;
+  let logoTapCount = 0;
+  let logoTapTimer = null;
   let lockoutInterval = null;
 
-  // Check if owner already authenticated in current session
-  if (sessionStorage.getItem(STORAGE_KEYS.SESSION) === 'active') {
+  function isOwnerSessionActive() {
+    return localStorage.getItem(STORAGE_KEYS.SESSION) === 'active' ||
+           sessionStorage.getItem(STORAGE_KEYS.SESSION) === 'active';
+  }
+
+  // Check if owner already authenticated in current session / device
+  if (isOwnerSessionActive() && (window.location.hash === '#owner' || window.location.search.includes('owner'))) {
     if (ownerOverlay) {
       ownerOverlay.classList.add('visible');
       if (onOwnerLoginSuccess) onOwnerLoginSuccess();
@@ -132,22 +139,24 @@ export function initOwnerAuth(onOwnerLoginSuccess, getCurrentLang) {
     if (pinInput) pinInput.value = '';
   }
 
-  // 7-tap detection on footer trigger within 3 seconds (3000ms)
-  if (footerTrigger) {
-    footerTrigger.addEventListener('click', (e) => {
-      // Avoid accidental text selection
-      tapCount++;
-      if (tapTimer) clearTimeout(tapTimer);
+  // 3-tap detection on brand logo trigger (opens owner panel)
+  function registerTripleTap(element) {
+    if (!element) return;
+    element.addEventListener('click', (e) => {
+      logoTapCount++;
+      if (logoTapTimer) clearTimeout(logoTapTimer);
 
-      tapTimer = setTimeout(() => {
-        tapCount = 0;
-      }, 3000);
+      logoTapTimer = setTimeout(() => {
+        logoTapCount = 0;
+      }, 2500);
 
-      if (tapCount >= 7) {
-        tapCount = 0;
-        clearTimeout(tapTimer);
-        // If already logged in, directly show owner overlay
-        if (sessionStorage.getItem(STORAGE_KEYS.SESSION) === 'active') {
+      if (logoTapCount >= 3) {
+        e.preventDefault();
+        e.stopPropagation();
+        logoTapCount = 0;
+        clearTimeout(logoTapTimer);
+
+        if (isOwnerSessionActive()) {
           if (ownerOverlay) ownerOverlay.classList.add('visible');
           if (onOwnerLoginSuccess) onOwnerLoginSuccess();
         } else {
@@ -157,10 +166,13 @@ export function initOwnerAuth(onOwnerLoginSuccess, getCurrentLang) {
     });
   }
 
+  registerTripleTap(brandHeaderTrigger);
+  registerTripleTap(footerTrigger);
+
   // Also allow opening via URL hash #owner or ?owner for owner convenience
   function checkUrlForOwnerTrigger() {
     if (window.location.hash === '#owner' || window.location.search.includes('owner')) {
-      if (sessionStorage.getItem(STORAGE_KEYS.SESSION) === 'active') {
+      if (isOwnerSessionActive()) {
         if (ownerOverlay) ownerOverlay.classList.add('visible');
         if (onOwnerLoginSuccess) onOwnerLoginSuccess();
       } else {
@@ -187,8 +199,10 @@ export function initOwnerAuth(onOwnerLoginSuccess, getCurrentLang) {
       const hash = await computeSha256(enteredPin);
 
       if (hash === OWNER_PIN_HASH) {
-        // Successful authentication
+        // Successful authentication - persist for owner's installed PWA / device
+        localStorage.setItem(STORAGE_KEYS.SESSION, 'active');
         sessionStorage.setItem(STORAGE_KEYS.SESSION, 'active');
+        localStorage.setItem('bbms_owner_device', 'true');
         localStorage.setItem(STORAGE_KEYS.ATTEMPTS, '0');
         localStorage.removeItem(STORAGE_KEYS.LOCKOUT_TIME);
         closePinModal();
@@ -244,10 +258,19 @@ export function initOwnerAuth(onOwnerLoginSuccess, getCurrentLang) {
     });
   }
 
-  // Logout button inside Owner Dashboard
+  // Close Dashboard button inside Owner Dashboard (returns to site without logout)
+  if (closeDashboardBtn) {
+    closeDashboardBtn.addEventListener('click', () => {
+      if (ownerOverlay) ownerOverlay.classList.remove('visible');
+    });
+  }
+
+  // Logout button inside Owner Dashboard (clears owner device persistence)
   if (logoutBtn) {
     logoutBtn.addEventListener('click', () => {
+      localStorage.removeItem(STORAGE_KEYS.SESSION);
       sessionStorage.removeItem(STORAGE_KEYS.SESSION);
+      localStorage.removeItem('bbms_owner_device');
       if (ownerOverlay) ownerOverlay.classList.remove('visible');
     });
   }

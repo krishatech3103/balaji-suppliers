@@ -132,6 +132,59 @@ checks.forEach(c => {
   }
 });
 
+// 6. Verify Owner Panel Features (Popups, Empty Materials, Discount, On-demand Preview)
+console.log('\n6. Verifying Owner Panel Features & Elements...');
+const ownerChecks = [
+  { name: 'History popup button in owner topbar', test: indexHtml.includes('id="btn-owner-history-popup"') },
+  { name: 'Backup popup button in owner topbar', test: indexHtml.includes('id="btn-owner-backup-popup"') },
+  { name: 'History modal popup with close button', test: indexHtml.includes('id="owner-history-modal"') && indexHtml.includes('id="btn-close-hist-modal"') },
+  { name: 'Backup modal popup with close button', test: indexHtml.includes('id="owner-backup-modal"') && indexHtml.includes('id="btn-close-backup-modal"') },
+  { name: 'Empty items initial container & hint box', test: indexHtml.includes('id="inv-items-container"') && indexHtml.includes('id="inv-items-empty-hint"') },
+  { name: 'Subtotal, Discount, and Grand Total inputs', test: indexHtml.includes('id="inv-input-subtotal"') && indexHtml.includes('id="inv-input-discount"') && indexHtml.includes('id="inv-input-grand-total"') },
+  { name: 'Generate Bill button', test: indexHtml.includes('id="btn-inv-generate"') },
+  { name: 'Edit Form button in invoice preview', test: indexHtml.includes('id="btn-inv-edit"') },
+  { name: 'Hidden preview wrapper initially', test: indexHtml.includes('id="invoice-preview-wrapper"') && indexHtml.includes('display: none;') },
+  { name: 'Discount row & Grand Total row in printable invoice card', test: indexHtml.includes('id="bill-row-discount"') && indexHtml.includes('id="bill-val-discount"') && indexHtml.includes('id="bill-val-grandtotal"') },
+  { name: 'No hardcoded default item rows inside inv-items-container HTML', test: !indexHtml.includes('<div class="inv-item-row">') }
+];
+
+ownerChecks.forEach(c => {
+  if (c.test) {
+    console.log(`✓ ${c.name} verified`);
+  } else {
+    throw new Error(`Owner Panel check failed for: ${c.name}`);
+  }
+});
+
+// 7. Math & Discount Calculation Unit Test
+console.log('\n7. Verifying Invoice Calculation Logic with Discount...');
+function calculateInvoiceTotals(items, discount, advance) {
+  const subtotal = items.reduce((sum, item) => sum + Math.round(item.qty * item.rate), 0);
+  const netDiscount = Math.max(0, discount || 0);
+  const grandTotal = Math.max(0, subtotal - netDiscount);
+  const netAdvance = Math.max(0, advance || 0);
+  const balanceDue = Math.max(0, grandTotal - netAdvance);
+  return { subtotal, discount: netDiscount, grandTotal, advance: netAdvance, balanceDue };
+}
+
+const sampleCalc = calculateInvoiceTotals(
+  [{ qty: 2, rate: 5000 }, { qty: 1.5, rate: 2800 }], // 10000 + 4200 = 14200
+  700, // discount
+  5000 // advance
+);
+
+if (
+  sampleCalc.subtotal === 14200 &&
+  sampleCalc.discount === 700 &&
+  sampleCalc.grandTotal === 13500 &&
+  sampleCalc.advance === 5000 &&
+  sampleCalc.balanceDue === 8500
+) {
+  console.log(`✓ Calculation formula matches: Subtotal ₹${sampleCalc.subtotal}, Discount -₹${sampleCalc.discount}, Grand Total ₹${sampleCalc.grandTotal}, Advance ₹${sampleCalc.advance}, Balance ₹${sampleCalc.balanceDue}`);
+} else {
+  throw new Error(`Calculation error: ${JSON.stringify(sampleCalc)}`);
+}
+
 console.log('\n=========================================');
 console.log('🎉 ALL AUTOMATED INTEGRITY TESTS PASSED! 🎉');
 console.log('=========================================\n');

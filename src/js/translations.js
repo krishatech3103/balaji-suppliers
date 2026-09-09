@@ -30,7 +30,7 @@ export const translations = {
     section_materials_subtitle: "घर, बंगला, रस्ता किंवा मोठ्या व्यावसायिक बांधकामासाठी लागणारे सर्व साहित्य प्रति ब्रास दराने उपलब्ध",
     unit_per_brass: "प्रति ब्रास उपलब्ध",
     inquire_now: "दर विचारा / निवडा",
-    
+
     // Products
     prod_sand_title: "नदी वाळू (River Sand)",
     prod_sand_desc: "उत्कृष्ट प्लास्टर, वीट बांधकाम आणि स्लॅबसाठी अत्यंत योग्य. मातीविरहित व दर्जेदार नदीची वाळू.",
@@ -77,7 +77,7 @@ export const translations = {
     why_2_title: "वेळेवर थेट डिलिव्हरी",
     why_2_desc: "स्वतःची सुसज्ज डंपर आणि टिप्पर यंत्रणा, ज्यामुळे तुमच्या साइटवर विनाविलंब माल पोहोचवला जातो.",
     why_3_title: "थेट वाजवी दर",
-    why_3_desc: "कोणताही मध्यस्थ नाही, थेट खाणीतून व सप्लायरकडून वाजवी दरात दर्जेदार साहित्य उपलब्ध.",
+    why_3_desc: "कोणताही मध्यस्थ नाही, थेट खाणीतून व सप्लायर्सकडून वाजवी दरात दर्जेदार साहित्य उपलब्ध.",
     why_4_title: "स्थानिक विश्वासू सेवा",
     why_4_desc: "तासगावमध्ये वर्षानुवर्षे अविरत सेवा. ग्राहक समाधान आणि प्रामाणिक व्यवहार हीच आमची शिदोरी.",
 
@@ -85,7 +85,7 @@ export const translations = {
     contact_title: "संपर्क व ठिकाण",
     contact_subtitle: "कोणत्याही चौकशीसाठी किंवा थेट ऑर्डर्ससाठी आजच संपर्क साधा",
     contact_address_label: "पत्ता:",
-    contact_address_val: "बालाजी बिल्डिंग मटेरियल सप्लायर, तासगाव, जि. सांगली, महाराष्ट्र - ४१६३१२",
+    contact_address_val: "बालाजी बिल्डिंग मटेरियल सप्लायर्स, तासगाव, जि. सांगली, महाराष्ट्र - ४१६३१२",
     contact_phone_label: "मोबाईल नंबर:",
     contact_whatsapp_label: "व्हॉट्सॲप:",
     contact_insta_label: "इन्स्टाग्राम (Instagram):",
@@ -110,7 +110,7 @@ export const translations = {
     footer_desc: "तासगाव परिसरातील सर्व प्रकारच्या बांधकामासाठी दर्जेदार वाळू, खडी, डस्ट सँड व वॉश वाळू पुरवठादार.",
     footer_quick_links: "जलद लिंक्स",
     footer_materials_list: "साहित्य यादी",
-    footer_copyright: "© २०२६ बालाजी बिल्डिंग मटेरियल सप्लायर, तासगाव. सर्व हक्क राखीव.",
+    footer_copyright: "© २०२६ बालाजी बिल्डिंग मटेरियल सप्लायर्स, तासगाव. सर्व हक्क राखीव.",
     footer_owner_hint: "गोपनीय मालक विभाग",
 
     // Owner Auth Modal
@@ -125,10 +125,16 @@ export const translations = {
 
     // Owner Dashboard & Invoice Generator
     owner_dash_title: "बालाजी मटेरियल - मालक डॅशबोर्ड",
+    owner_btn_close: "✕ बंद करा",
     owner_btn_logout: "लॉगआउट",
+    owner_btn_history: "📋 इतिहास",
+    owner_btn_backup: "💾 बॅकअप",
     owner_tab_new_invoice: "नवीन बिल / चालन",
     owner_tab_history: "मागील बिलांचा इतिहास",
     owner_tab_backup: "डेटा बॅकअप",
+    drawer_wa_btn: "WhatsApp वर संपर्क",
+    drawer_call_btn: "थेट कॉल करा",
+    drawer_insta_btn: "Instagram वर फॉलो करा",
 
     // Invoice Form Fields
     inv_title: "चालन व बिल जनरेटर",
@@ -144,12 +150,15 @@ export const translations = {
     inv_th_total: "एकूण रक्कम (₹)",
     inv_th_action: "क्रिया",
     inv_btn_add_item: "+ आणखी साहित्य जोडा",
-    inv_total_amount: "एकूण रक्कम (Grand Total):",
+    inv_subtotal_amount: "साहित्याची एकूण रक्कम (Subtotal):",
+    inv_discount_label: "सूट / डिस्काउंट (Discount ₹):",
+    inv_total_amount: "एकूण देय रक्कम (Grand Total):",
     inv_advance_paid: "जमा / ॲडव्हान्स रक्कम (₹):",
     inv_balance_due: "शिल्लक रक्कम (Balance Due):",
     inv_notes_label: "नोंद / गाडी क्रमांक (Vehicle No / Note):",
     inv_notes_placeholder: "उदा. गाडी क्रमांक / साईटची नोंद...",
-    inv_btn_generate: "बिल प्रिव्ह्यू तयार करा",
+    inv_btn_generate: "📄 बिल तयार करा (Generate Bill)",
+    inv_btn_edit: "✏️ बदल करा / एडिट",
     inv_btn_share_wa: "WhatsApp वर बिल शेअर करा",
     inv_btn_download_png: "बिल इमेज (PNG) डाऊनलोड करा",
     inv_btn_save: "बिल सेव्ह करा",
@@ -157,7 +166,7 @@ export const translations = {
 
     // Invoice Preview Template Labels (Pure Marathi Only)
     bill_top_heading: "|| श्री दारेश्वर प्रसन्न ||",
-    bill_firm_name: "बालाजी बिल्डिंग मटेरियल सप्लायर",
+    bill_firm_name: "बालाजी बिल्डिंग मटेरियल सप्लायर्स",
     bill_firm_name_en: "",
     bill_firm_address: "तासगाव, जि. सांगली, महाराष्ट्र - ४१६३१२",
     bill_firm_phone: "मोबाईल: +91 8484029427 | 8484029427",
@@ -173,7 +182,9 @@ export const translations = {
     bill_col_brass: "प्रमाण (ब्रास)",
     bill_col_rate: "दर (₹/ब्रास)",
     bill_col_amount: "रक्कम (₹)",
-    bill_lbl_subtotal: "एकूण रक्कम:",
+    bill_lbl_subtotal: "साहित्याची एकूण रक्कम:",
+    bill_lbl_discount: "सूट / डिस्काउंट:",
+    bill_lbl_grandtotal: "एकूण देय रक्कम:",
     bill_lbl_advance: "जमा रक्कम:",
     bill_lbl_balance: "शिल्लक रक्कम:",
     bill_upi_heading: "UPI QR कोड - स्कॅन करून पैसे भरा",
@@ -183,6 +194,7 @@ export const translations = {
     bill_signatory: "बालाजी बिल्डिंग मटेरियल करिता (स्वाक्षरी)",
 
     // History & Backup
+    hist_modal_title: "मागील बिलांचा इतिहास",
     hist_search_placeholder: "ग्राहकाचे नाव, मोबाईल किंवा बिल क्र. शोधा...",
     hist_empty: "कोणतेही सेव्ह केलेले बिल आढळले नाही.",
     hist_total_invoices: "एकूण बिलांची संख्या:",
@@ -330,10 +342,16 @@ export const translations = {
 
     // Owner Dashboard & Invoice Generator
     owner_dash_title: "Balaji Materials - Owner Dashboard",
+    owner_btn_close: "✕ Close",
     owner_btn_logout: "Logout",
+    owner_btn_history: "📋 History",
+    owner_btn_backup: "💾 Backup",
     owner_tab_new_invoice: "New Invoice / Challan",
     owner_tab_history: "Invoice History",
     owner_tab_backup: "Data Backup",
+    drawer_wa_btn: "Contact on WhatsApp",
+    drawer_call_btn: "Call Directly",
+    drawer_insta_btn: "Follow on Instagram",
 
     // Invoice Form Fields
     inv_title: "Invoice & Challan Generator",
@@ -349,12 +367,15 @@ export const translations = {
     inv_th_total: "Total (₹)",
     inv_th_action: "Action",
     inv_btn_add_item: "+ Add Another Material",
+    inv_subtotal_amount: "Subtotal:",
+    inv_discount_label: "Discount (₹):",
     inv_total_amount: "Grand Total:",
     inv_advance_paid: "Advance Paid (₹):",
     inv_balance_due: "Balance Due (₹):",
     inv_notes_label: "Vehicle No / Note:",
     inv_notes_placeholder: "e.g. Vehicle note / site remarks...",
-    inv_btn_generate: "Generate Preview",
+    inv_btn_generate: "📄 Generate Invoice",
+    inv_btn_edit: "✏️ Edit Form",
     inv_btn_share_wa: "Share Invoice to WhatsApp",
     inv_btn_download_png: "Download Invoice (PNG)",
     inv_btn_save: "Save Invoice",
@@ -362,7 +383,7 @@ export const translations = {
 
     // Invoice Preview Template Labels (Pure Marathi Only)
     bill_top_heading: "|| श्री दारेश्वर प्रसन्न ||",
-    bill_firm_name: "बालाजी बिल्डिंग मटेरियल सप्लायर",
+    bill_firm_name: "बालाजी बिल्डिंग मटेरियल सप्लायर्स",
     bill_firm_name_en: "",
     bill_firm_address: "तासगाव, जि. सांगली, महाराष्ट्र - ४१६३१२",
     bill_firm_phone: "मोबाईल: +91 8484029427 | 8484029427",
@@ -378,7 +399,9 @@ export const translations = {
     bill_col_brass: "प्रमाण (ब्रास)",
     bill_col_rate: "दर (₹/ब्रास)",
     bill_col_amount: "रक्कम (₹)",
-    bill_lbl_subtotal: "एकूण रक्कम:",
+    bill_lbl_subtotal: "साहित्याची एकूण रक्कम:",
+    bill_lbl_discount: "सूट / डिस्काउंट:",
+    bill_lbl_grandtotal: "एकूण देय रक्कम:",
     bill_lbl_advance: "जमा रक्कम:",
     bill_lbl_balance: "शिल्लक रक्कम:",
     bill_upi_heading: "UPI QR कोड - स्कॅन करून पैसे भरा",
@@ -388,6 +411,7 @@ export const translations = {
     bill_signatory: "बालाजी बिल्डिंग मटेरियल करिता (स्वाक्षरी)",
 
     // History & Backup
+    hist_modal_title: "Invoice History",
     hist_search_placeholder: "Search customer name, mobile, or invoice no...",
     hist_empty: "No saved invoices found.",
     hist_total_invoices: "Total Invoices:",

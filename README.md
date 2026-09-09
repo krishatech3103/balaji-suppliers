@@ -8,7 +8,7 @@ Runs 100% client-side with no backend or database required, fully deployable to 
 
 ## 1. Business Information
 
-- **Business Name:** Balaji Building Material Supplier (बालाजी बिल्डिंग मटेरियल सप्लायर)
+- **Business Name:** Balaji Building Material Supplier (बालाजी बिल्डिंग मटेरियल सप्लायर्स)
 - **Location:** Tasgaon, Dist. Sangli, Maharashtra, India - 416312
 - **Phone / WhatsApp:** [+91 8484029427](tel:+918484029427)
 - **WhatsApp Link:** [https://wa.me/918484029427](https://wa.me/918484029427)

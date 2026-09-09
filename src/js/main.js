@@ -143,16 +143,8 @@ function setupNavigation() {
 
   // Close drawer when clicking any link inside it
   drawerLinks.forEach((link) => {
-    link.addEventListener('click', (e) => {
+    link.addEventListener('click', () => {
       closeDrawer();
-      if (link.id === 'drawer-owner-link') {
-        e.preventDefault();
-        if (window.location.hash === '#owner') {
-          window.dispatchEvent(new HashChangeEvent('hashchange'));
-        } else {
-          window.location.hash = 'owner';
-        }
-      }
     });
   });
 

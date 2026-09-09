@@ -17,8 +17,9 @@ const DEFAULT_MATERIALS = [
 ];
 
 export function initInvoiceModule(getCurrentLang) {
-  // Elements
+  // Elements - Form Inputs
   const invForm = document.getElementById('invoice-form');
+  const invFormCard = document.getElementById('invoice-form-card');
   const invNoInput = document.getElementById('inv-input-no');
   const invDateInput = document.getElementById('inv-input-date');
   const custNameInput = document.getElementById('inv-input-name');
@@ -26,12 +27,22 @@ export function initInvoiceModule(getCurrentLang) {
   const custVillageInput = document.getElementById('inv-input-village');
   const notesInput = document.getElementById('inv-input-notes');
   const itemsContainer = document.getElementById('inv-items-container');
+  const itemsEmptyHint = document.getElementById('inv-items-empty-hint');
   const addItemBtn = document.getElementById('btn-add-inv-item');
+
+  // Calculation & Totals Inputs
+  const subtotalInput = document.getElementById('inv-input-subtotal');
+  const discountInput = document.getElementById('inv-input-discount');
   const grandTotalInput = document.getElementById('inv-input-grand-total');
   const advancePaidInput = document.getElementById('inv-input-advance');
   const balanceDueInput = document.getElementById('inv-input-balance');
 
-  // Preview elements
+  // Form Controls
+  const btnGenerateInv = document.getElementById('btn-inv-generate');
+  const btnResetForm = document.getElementById('btn-inv-reset');
+
+  // Preview Wrapper & Card Elements
+  const invoicePreviewWrapper = document.getElementById('invoice-preview-wrapper');
   const invoicePreviewEl = document.getElementById('invoice-printable-card');
   const prevInvNo = document.getElementById('bill-val-no');
   const prevDate = document.getElementById('bill-val-date');
@@ -42,17 +53,28 @@ export function initInvoiceModule(getCurrentLang) {
   const prevNotesVal = document.getElementById('bill-val-notes');
   const prevItemsTbody = document.getElementById('bill-tbody-items');
   const prevSubtotal = document.getElementById('bill-val-subtotal');
+  const prevRowDiscount = document.getElementById('bill-row-discount');
+  const prevDiscount = document.getElementById('bill-val-discount');
+  const prevGrandTotal = document.getElementById('bill-val-grandtotal');
   const prevAdvance = document.getElementById('bill-val-advance');
   const prevBalance = document.getElementById('bill-val-balance');
   const qrCanvas = document.getElementById('bill-qr-canvas');
 
-  // Action Buttons
+  // Preview Action Buttons
+  const btnSaveInv = document.getElementById('btn-inv-save');
+  const btnEditInv = document.getElementById('btn-inv-edit');
   const btnShareWa = document.getElementById('btn-inv-share-wa');
   const btnDownloadPng = document.getElementById('btn-inv-download-png');
-  const btnSaveInv = document.getElementById('btn-inv-save');
-  const btnResetForm = document.getElementById('btn-inv-reset');
 
-  // History Elements
+  // Topbar Popup Modals Elements
+  const btnOwnerHistoryPopup = document.getElementById('btn-owner-history-popup');
+  const btnOwnerBackupPopup = document.getElementById('btn-owner-backup-popup');
+  const ownerHistoryModal = document.getElementById('owner-history-modal');
+  const ownerBackupModal = document.getElementById('owner-backup-modal');
+  const btnCloseHistModal = document.getElementById('btn-close-hist-modal');
+  const btnCloseBackupModal = document.getElementById('btn-close-backup-modal');
+
+  // History & Backup Controls
   const searchInput = document.getElementById('hist-search-input');
   const historyListContainer = document.getElementById('hist-list-container');
   const statTotalInvoices = document.getElementById('stat-total-invoices');
@@ -61,10 +83,6 @@ export function initInvoiceModule(getCurrentLang) {
   const btnExportBackup = document.getElementById('btn-export-backup');
   const btnImportBackup = document.getElementById('btn-import-backup');
   const fileImportInput = document.getElementById('file-import-input');
-
-  // Tabs
-  const tabBtns = document.querySelectorAll('.owner-tab-btn');
-  const tabContents = document.querySelectorAll('.owner-tab-content');
 
   let currentEditingInvoiceId = null;
 
@@ -89,36 +107,53 @@ export function initInvoiceModule(getCurrentLang) {
     localStorage.setItem(STORAGE_KEYS.INVOICE_COUNTER, (counter + 1).toString());
   }
 
-  // Create a new Line Item Row
+  // Check and toggle empty items state container
+  function updateEmptyItemsState() {
+    if (!itemsContainer) return;
+    const rowCount = itemsContainer.querySelectorAll('.inv-item-row').length;
+    if (itemsEmptyHint) {
+      itemsEmptyHint.style.display = rowCount === 0 ? 'block' : 'none';
+    }
+  }
+
+  // Create a new Line Item Row (empty by default unless data provided)
   function createLineItemRow(data = {}) {
+    if (!itemsContainer) return;
+
     const row = document.createElement('div');
     row.className = 'inv-item-row';
 
+    const hasMaterialSelected = Boolean(data.material);
+    const placeholderOption = `<option value="" disabled ${!hasMaterialSelected ? 'selected' : ''}>-- साहित्य निवडा (Select) --</option>`;
     const materialOptions = DEFAULT_MATERIALS.map(
       (m) => `<option value="${m.val}" ${data.material === m.val ? 'selected' : ''}>${m.val}</option>`
     ).join('');
 
+    const qtyVal = (data.qty !== undefined && data.qty !== null && data.qty !== '') ? data.qty : '';
+    const rateVal = (data.rate !== undefined && data.rate !== null && data.rate !== '') ? data.rate : '';
+
     row.innerHTML = `
       <div class="inv-item-field material-col">
-        <label class="sr-only">Material</label>
+        <label class="sr-only">साहित्य</label>
         <select class="inv-item-material select-input">
+          ${placeholderOption}
           ${materialOptions}
         </select>
       </div>
       <div class="inv-item-field qty-col">
-        <label class="sr-only">Qty</label>
-        <input type="number" class="inv-item-qty text-input" placeholder="Qty" min="0.1" step="0.5" value="${data.qty || 2}">
+        <label class="sr-only">प्रमाण (ब्रास)</label>
+        <input type="number" class="inv-item-qty text-input" placeholder="ब्रास" min="0.1" step="0.5" value="${qtyVal}">
       </div>
       <div class="inv-item-field rate-col">
-        <label class="sr-only">Rate</label>
-        <input type="number" class="inv-item-rate text-input" placeholder="Rate ₹" min="0" step="100" value="${data.rate || 5000}">
+        <label class="sr-only">दर (₹/ब्रास)</label>
+        <input type="number" class="inv-item-rate text-input" placeholder="दर ₹" min="0" step="100" value="${rateVal}">
       </div>
       <div class="inv-item-field total-col">
-        <label class="sr-only">Total</label>
+        <label class="sr-only">एकूण</label>
         <span class="inv-item-line-total">₹0</span>
       </div>
       <div class="inv-item-field action-col">
-        <button type="button" class="btn-remove-line-item" title="Remove Item" aria-label="Remove Item">×</button>
+        <button type="button" class="btn-remove-line-item" title="काढून टाका" aria-label="काढून टाका">×</button>
       </div>
     `;
 
@@ -137,7 +172,7 @@ export function initInvoiceModule(getCurrentLang) {
     }
 
     matSelect.addEventListener('change', () => {
-      // update suggested rate if default
+      // Auto-suggest default rate if input was empty or untouched
       const found = DEFAULT_MATERIALS.find((m) => m.val === matSelect.value);
       if (found && (!rateInput.value || rateInput.value === '0' || rateInput.dataset.touched !== 'true')) {
         rateInput.value = found.defaultRate;
@@ -153,42 +188,45 @@ export function initInvoiceModule(getCurrentLang) {
     qtyInput.addEventListener('input', updateLineTotal);
 
     removeBtn.addEventListener('click', () => {
-      if (itemsContainer.children.length > 1) {
-        row.remove();
-        updateGrandTotals();
-      } else {
-        alert('किमान एक साहित्य असणे आवश्यक आहे! (At least one line item is required)');
-      }
+      row.remove();
+      updateEmptyItemsState();
+      updateGrandTotals();
     });
 
     itemsContainer.appendChild(row);
+    updateEmptyItemsState();
     updateLineTotal();
   }
 
-  // Update Grand Total and Balance Due
+  // Update Grand Total, Discount, and Balance Due
   function updateGrandTotals() {
-    let grandTotal = 0;
-    const rows = itemsContainer.querySelectorAll('.inv-item-row');
+    let subtotal = 0;
+    const rows = itemsContainer ? itemsContainer.querySelectorAll('.inv-item-row') : [];
 
     rows.forEach((row) => {
       const q = parseFloat(row.querySelector('.inv-item-qty')?.value) || 0;
       const r = parseFloat(row.querySelector('.inv-item-rate')?.value) || 0;
-      grandTotal += Math.round(q * r);
+      subtotal += Math.round(q * r);
     });
 
-    const advance = parseFloat(advancePaidInput?.value) || 0;
+    const discount = Math.max(0, parseFloat(discountInput?.value) || 0);
+    const grandTotal = Math.max(0, subtotal - discount);
+    const advance = Math.max(0, parseFloat(advancePaidInput?.value) || 0);
     const balance = Math.max(0, grandTotal - advance);
 
+    if (subtotalInput) subtotalInput.value = subtotal;
     if (grandTotalInput) grandTotalInput.value = grandTotal;
     if (balanceDueInput) balanceDueInput.value = balance;
 
-    // Refresh live preview as fields update
-    renderLiveInvoicePreview();
+    // Refresh live preview if already generated and visible
+    if (invoicePreviewWrapper && invoicePreviewWrapper.style.display !== 'none') {
+      renderLiveInvoicePreview();
+    }
   }
 
   // Gather current form data
   function getFormData() {
-    const rows = itemsContainer.querySelectorAll('.inv-item-row');
+    const rows = itemsContainer ? itemsContainer.querySelectorAll('.inv-item-row') : [];
     const items = [];
 
     rows.forEach((row) => {
@@ -196,8 +234,16 @@ export function initInvoiceModule(getCurrentLang) {
       const qty = parseFloat(row.querySelector('.inv-item-qty')?.value) || 0;
       const rate = parseFloat(row.querySelector('.inv-item-rate')?.value) || 0;
       const amount = Math.round(qty * rate);
-      items.push({ material, qty, rate, amount });
+      if (material || qty > 0 || rate > 0) {
+        items.push({ material: material || 'बांधकाम साहित्य', qty, rate, amount });
+      }
     });
+
+    const subtotal = parseFloat(subtotalInput?.value) || 0;
+    const discount = Math.max(0, parseFloat(discountInput?.value) || 0);
+    const grandTotal = Math.max(0, parseFloat(grandTotalInput?.value) || Math.max(0, subtotal - discount));
+    const advancePaid = Math.max(0, parseFloat(advancePaidInput?.value) || 0);
+    const balanceDue = Math.max(0, parseFloat(balanceDueInput?.value) || Math.max(0, grandTotal - advancePaid));
 
     return {
       invoiceNo: invNoInput ? invNoInput.value.trim() : getNextInvoiceNumber(),
@@ -207,18 +253,18 @@ export function initInvoiceModule(getCurrentLang) {
       customerVillage: custVillageInput ? custVillageInput.value.trim() : '',
       notes: notesInput ? notesInput.value.trim() : '',
       items,
-      grandTotal: parseFloat(grandTotalInput?.value) || 0,
-      advancePaid: parseFloat(advancePaidInput?.value) || 0,
-      balanceDue: parseFloat(balanceDueInput?.value) || 0,
+      subtotal,
+      discount,
+      grandTotal,
+      advancePaid,
+      balanceDue,
       timestamp: Date.now()
     };
   }
 
-  // Render DOM Invoice Preview
+  // Render DOM Invoice Preview (Pure Marathi bill format)
   async function renderLiveInvoicePreview() {
     const data = getFormData();
-    const lang = getCurrentLang();
-    const t = translations[lang] || translations.mr;
 
     if (prevInvNo) prevInvNo.textContent = data.invoiceNo;
     if (prevDate) prevDate.textContent = data.date;
@@ -233,31 +279,51 @@ export function initInvoiceModule(getCurrentLang) {
       if (prevNotesRow) prevNotesRow.style.display = 'none';
     }
 
-    // Populate rows strictly in pure Marathi
+    // Populate line items strictly in pure Marathi
     if (prevItemsTbody) {
-      prevItemsTbody.innerHTML = data.items.map((item, idx) => `
-        <tr>
-          <td class="text-center font-bold">${idx + 1}</td>
-          <td>${item.material}</td>
-          <td class="text-center font-bold">${item.qty} ब्रास</td>
-          <td class="text-right">₹${item.rate.toLocaleString('en-IN')}</td>
-          <td class="text-right font-bold">₹${item.amount.toLocaleString('en-IN')}</td>
-        </tr>
-      `).join('');
+      if (data.items.length === 0) {
+        prevItemsTbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="text-center" style="padding: 0.85rem; color: #64748b;">
+              कोणतेही साहित्य जोडलेले नाही
+            </td>
+          </tr>
+        `;
+      } else {
+        prevItemsTbody.innerHTML = data.items.map((item, idx) => `
+          <tr>
+            <td class="text-center font-bold">${idx + 1}</td>
+            <td>${item.material}</td>
+            <td class="text-center font-bold">${item.qty} ब्रास</td>
+            <td class="text-right">₹${item.rate.toLocaleString('en-IN')}</td>
+            <td class="text-right font-bold">₹${item.amount.toLocaleString('en-IN')}</td>
+          </tr>
+        `).join('');
+      }
     }
 
-    if (prevSubtotal) prevSubtotal.textContent = `₹${data.grandTotal.toLocaleString('en-IN')}`;
+    if (prevSubtotal) prevSubtotal.textContent = `₹${data.subtotal.toLocaleString('en-IN')}`;
+
+    // Discount row visibility
+    if (data.discount > 0) {
+      if (prevRowDiscount) prevRowDiscount.style.display = 'flex';
+      if (prevDiscount) prevDiscount.textContent = `- ₹${data.discount.toLocaleString('en-IN')}`;
+    } else {
+      if (prevRowDiscount) prevRowDiscount.style.display = 'none';
+    }
+
+    if (prevGrandTotal) prevGrandTotal.textContent = `₹${data.grandTotal.toLocaleString('en-IN')}`;
     if (prevAdvance) prevAdvance.textContent = `₹${data.advancePaid.toLocaleString('en-IN')}`;
     if (prevBalance) prevBalance.textContent = `₹${data.balanceDue.toLocaleString('en-IN')}`;
 
-    // Render open static UPI QR code (strictly non-amount driven) onto the canvas
+    // Render open static UPI QR code (strictly non-amount driven) onto canvas
     if (qrCanvas) {
       const upiUri = createUpiPaymentUri(data.invoiceNo);
       await renderUpiQrToCanvas(qrCanvas, upiUri, 170);
     }
   }
 
-  // Reset form to blank new invoice
+  // Reset form to blank new invoice (Empty materials, hidden preview)
   function resetForm() {
     currentEditingInvoiceId = null;
     if (invNoInput) invNoInput.value = getNextInvoiceNumber();
@@ -266,12 +332,20 @@ export function initInvoiceModule(getCurrentLang) {
     if (custMobileInput) custMobileInput.value = '';
     if (custVillageInput) custVillageInput.value = '';
     if (notesInput) notesInput.value = '';
+    if (discountInput) discountInput.value = '0';
     if (advancePaidInput) advancePaidInput.value = '0';
+
+    // Materials kept empty initially as requested
     if (itemsContainer) {
       itemsContainer.innerHTML = '';
-      createLineItemRow();
     }
+    updateEmptyItemsState();
     updateGrandTotals();
+
+    // Hide invoice preview until user fills data and clicks generate
+    if (invoicePreviewWrapper) {
+      invoicePreviewWrapper.style.display = 'none';
+    }
   }
 
   // Generate PNG Blob from invoice card using html2canvas
@@ -279,7 +353,6 @@ export function initInvoiceModule(getCurrentLang) {
     await renderLiveInvoicePreview();
     if (!invoicePreviewEl) return null;
 
-    // Temporarily make sure it's fully styled and visible for capture
     const canvas = await html2canvas(invoicePreviewEl, {
       scale: 2, // 2x for high DPI sharpness
       useCORS: true,
@@ -297,7 +370,7 @@ export function initInvoiceModule(getCurrentLang) {
   function saveInvoiceToHistory() {
     const data = getFormData();
     if (!data.customerName && data.items.length === 0) {
-      alert('कृपया किमान ग्राहकाचे नाव किंवा साहित्य भरा.');
+      alert('कृपया किमान ग्राहकाचे नाव किंवा साहित्याचा तपशील भरा.');
       return false;
     }
 
@@ -314,10 +387,10 @@ export function initInvoiceModule(getCurrentLang) {
     }
 
     localStorage.setItem(STORAGE_KEYS.INVOICE_HISTORY, JSON.stringify(history));
-    renderHistoryList();
+    renderHistoryList(searchInput?.value || '');
     const lang = getCurrentLang();
     const t = translations[lang] || translations.mr;
-    alert(t.msg_saved_success);
+    alert(t.msg_saved_success || 'बिल यशस्वीरीत्या सेव्ह झाले!');
     return true;
   }
 
@@ -331,7 +404,7 @@ export function initInvoiceModule(getCurrentLang) {
     }
   }
 
-  // Load a historical invoice into the generator form
+  // Load a historical invoice into the generator form and open preview
   function loadInvoiceToForm(inv) {
     currentEditingInvoiceId = inv.invoiceNo;
     if (invNoInput) invNoInput.value = inv.invoiceNo;
@@ -340,36 +413,42 @@ export function initInvoiceModule(getCurrentLang) {
     if (custMobileInput) custMobileInput.value = inv.customerMobile || '';
     if (custVillageInput) custVillageInput.value = inv.customerVillage || '';
     if (notesInput) notesInput.value = inv.notes || '';
+    if (discountInput) discountInput.value = inv.discount || 0;
     if (advancePaidInput) advancePaidInput.value = inv.advancePaid || 0;
 
     if (itemsContainer) {
       itemsContainer.innerHTML = '';
       if (inv.items && inv.items.length > 0) {
         inv.items.forEach((item) => createLineItemRow(item));
-      } else {
-        createLineItemRow();
       }
     }
-
+    updateEmptyItemsState();
     updateGrandTotals();
-    // Switch to new invoice tab
-    switchTab('tab-new-invoice');
-    invoicePreviewEl.scrollIntoView({ behavior: 'smooth' });
+
+    // Close History Modal
+    closeModal(ownerHistoryModal);
+
+    // Show preview directly for inspection
+    renderLiveInvoicePreview();
+    if (invoicePreviewWrapper) {
+      invoicePreviewWrapper.style.display = 'block';
+      invoicePreviewWrapper.scrollIntoView({ behavior: 'smooth' });
+    }
   }
 
   // Delete invoice from history
   function deleteInvoice(invoiceNo) {
     const lang = getCurrentLang();
     const t = translations[lang] || translations.mr;
-    if (!confirm(`${t.hist_confirm_delete} (${invoiceNo})`)) return;
+    if (!confirm(`${t.hist_confirm_delete || 'तुम्हाला हे बिल कायमचे हटवायचे आहे का?'} (${invoiceNo})`)) return;
 
     let history = getSavedInvoices();
     history = history.filter((inv) => inv.invoiceNo !== invoiceNo);
     localStorage.setItem(STORAGE_KEYS.INVOICE_HISTORY, JSON.stringify(history));
-    renderHistoryList();
+    renderHistoryList(searchInput?.value || '');
   }
 
-  // Render History List & Stats
+  // Render History List & Stats in the History Popup
   function renderHistoryList(filterText = '') {
     const history = getSavedInvoices();
     const lang = getCurrentLang();
@@ -401,7 +480,7 @@ export function initInvoiceModule(getCurrentLang) {
     if (!historyListContainer) return;
 
     if (filtered.length === 0) {
-      historyListContainer.innerHTML = `<div class="hist-empty-notice">${t.hist_empty}</div>`;
+      historyListContainer.innerHTML = `<div class="hist-empty-notice">${t.hist_empty || 'कोणतेही सेव्ह केलेले बिल आढळले नाही.'}</div>`;
       return;
     }
 
@@ -412,25 +491,25 @@ export function initInvoiceModule(getCurrentLang) {
           <span class="hist-inv-date">${inv.date}</span>
         </div>
         <div class="hist-card-body">
-          <h4 class="hist-cust-name">${inv.customerName || 'Customer'}</h4>
+          <h4 class="hist-cust-name">${inv.customerName || 'ग्राहक'}</h4>
           <p class="hist-cust-details">
-            <span>📍 ${inv.customerVillage || 'Tasgaon'}</span>
+            <span>📍 ${inv.customerVillage || 'तासगाव'}</span>
             ${inv.customerMobile ? `<span>📞 ${inv.customerMobile}</span>` : ''}
           </p>
           <div class="hist-amount-row">
             <div>
-              <small>${t.inv_total_amount}</small>
+              <small>${t.inv_total_amount || 'एकूण रक्कम'}</small>
               <strong class="text-dark">₹${(inv.grandTotal || 0).toLocaleString('en-IN')}</strong>
             </div>
             <div>
-              <small>${t.inv_balance_due}</small>
+              <small>${t.inv_balance_due || 'शिल्लक रक्कम'}</small>
               <strong class="text-orange">₹${(inv.balanceDue || 0).toLocaleString('en-IN')}</strong>
             </div>
           </div>
         </div>
         <div class="hist-card-actions">
-          <button type="button" class="btn-hist-view" data-inv-id="${inv.invoiceNo}">${t.hist_btn_view}</button>
-          <button type="button" class="btn-hist-delete" data-inv-id="${inv.invoiceNo}">✕ ${t.hist_btn_delete}</button>
+          <button type="button" class="btn-hist-view" data-inv-id="${inv.invoiceNo}">${t.hist_btn_view || 'बिल पहा / एडिट'}</button>
+          <button type="button" class="btn-hist-delete" data-inv-id="${inv.invoiceNo}">✕ ${t.hist_btn_delete || 'हटवा'}</button>
         </div>
       </div>
     `).join('');
@@ -455,10 +534,8 @@ export function initInvoiceModule(getCurrentLang) {
   // Web Share API & WhatsApp Sharing
   async function shareInvoice() {
     const data = getFormData();
-    const lang = getCurrentLang();
-    const t = translations[lang] || translations.mr;
 
-    // Make sure it is saved
+    // Auto-save invoice to history
     saveInvoiceToHistory();
 
     const blob = await generateInvoiceBlob();
@@ -475,13 +552,19 @@ export function initInvoiceModule(getCurrentLang) {
     const recipientPhone = cleanPhone.length === 10 ? `91${cleanPhone}` : cleanPhone;
 
     const mrT = translations.mr;
-    const shareSummaryText = `${mrT.bill_firm_name} (${mrT.brand_tagline})\n` +
+    let shareSummaryText = `${mrT.bill_firm_name} (${mrT.brand_tagline})\n` +
       `*${mrT.bill_type_title}*\n` +
       `${mrT.bill_lbl_inv_no} ${data.invoiceNo}\n` +
       `${mrT.bill_lbl_customer} ${data.customerName || 'ग्राहक'}\n` +
-      `${mrT.bill_lbl_subtotal} ₹${data.grandTotal}\n` +
-      `${mrT.bill_lbl_advance} ₹${data.advancePaid}\n` +
-      `*${mrT.bill_lbl_balance} ₹${data.balanceDue}*\n` +
+      `${mrT.bill_lbl_subtotal} ₹${data.subtotal.toLocaleString('en-IN')}\n`;
+
+    if (data.discount > 0) {
+      shareSummaryText += `${mrT.bill_lbl_discount} -₹${data.discount.toLocaleString('en-IN')}\n`;
+    }
+
+    shareSummaryText += `${mrT.bill_lbl_grandtotal} ₹${data.grandTotal.toLocaleString('en-IN')}\n` +
+      `${mrT.bill_lbl_advance} ₹${data.advancePaid.toLocaleString('en-IN')}\n` +
+      `*${mrT.bill_lbl_balance} ₹${data.balanceDue.toLocaleString('en-IN')}*\n` +
       `UPI आयडी: pujarisudip5@okaxis`;
 
     // Try Web Share API with files (Android Chrome, iOS Safari)
@@ -574,60 +657,139 @@ export function initInvoiceModule(getCurrentLang) {
             localStorage.setItem(STORAGE_KEYS.INVOICE_COUNTER, parsed.counter.toString());
           }
           renderHistoryList();
-          alert(t.msg_backup_restored);
+          alert(t.msg_backup_restored || 'बॅकअप यशस्वीरीत्या रिस्टोअर झाला!');
+          closeModal(ownerBackupModal);
         } else {
-          alert(t.msg_invalid_backup);
+          alert(t.msg_invalid_backup || 'अवैध बॅकअप फाइल!');
         }
       } catch (err) {
         console.error('Import failed:', err);
-        alert(t.msg_invalid_backup);
+        alert(t.msg_invalid_backup || 'अवैध बॅकअप फाइल!');
       }
     };
     reader.readAsText(file);
   }
 
-  // Tab Switching
-  function switchTab(targetId) {
-    tabBtns.forEach((btn) => {
-      const id = btn.getAttribute('data-tab');
-      btn.classList.toggle('active', id === targetId);
-    });
-    tabContents.forEach((c) => {
-      c.classList.toggle('active', c.id === targetId);
-    });
-
-    if (targetId === 'tab-history') {
-      renderHistoryList(searchInput?.value || '');
-    }
+  // Modal helpers
+  function openModal(modalEl) {
+    if (!modalEl) return;
+    modalEl.classList.add('visible');
+    modalEl.setAttribute('aria-hidden', 'false');
   }
 
-  tabBtns.forEach((btn) => {
-    btn.addEventListener('click', () => {
-      switchTab(btn.getAttribute('data-tab'));
+  function closeModal(modalEl) {
+    if (!modalEl) return;
+    modalEl.classList.remove('visible');
+    modalEl.setAttribute('aria-hidden', 'true');
+  }
+
+  // Popup Triggers & Closes
+  if (btnOwnerHistoryPopup) {
+    btnOwnerHistoryPopup.addEventListener('click', () => {
+      renderHistoryList(searchInput?.value || '');
+      openModal(ownerHistoryModal);
     });
+  }
+
+  if (btnOwnerBackupPopup) {
+    btnOwnerBackupPopup.addEventListener('click', () => {
+      openModal(ownerBackupModal);
+    });
+  }
+
+  if (btnCloseHistModal) {
+    btnCloseHistModal.addEventListener('click', () => {
+      closeModal(ownerHistoryModal);
+    });
+  }
+
+  if (btnCloseBackupModal) {
+    btnCloseBackupModal.addEventListener('click', () => {
+      closeModal(ownerBackupModal);
+    });
+  }
+
+  // Close modals on clicking outside / backdrop
+  [ownerHistoryModal, ownerBackupModal].forEach((m) => {
+    if (m) {
+      m.addEventListener('click', (e) => {
+        if (e.target === m) closeModal(m);
+      });
+    }
   });
 
-  // Event Listeners
-  if (addItemBtn) addItemBtn.addEventListener('click', () => createLineItemRow());
-  if (advancePaidInput) advancePaidInput.addEventListener('input', updateGrandTotals);
-  if (invNoInput) invNoInput.addEventListener('input', renderLiveInvoicePreview);
-  if (invDateInput) invDateInput.addEventListener('input', renderLiveInvoicePreview);
-  if (custNameInput) custNameInput.addEventListener('input', renderLiveInvoicePreview);
-  if (custMobileInput) custMobileInput.addEventListener('input', renderLiveInvoicePreview);
-  if (custVillageInput) custVillageInput.addEventListener('input', renderLiveInvoicePreview);
-  if (notesInput) notesInput.addEventListener('input', renderLiveInvoicePreview);
+  // Escape key closes open submodals
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeModal(ownerHistoryModal);
+      closeModal(ownerBackupModal);
+    }
+  });
 
+  // Add Item Click
+  if (addItemBtn) {
+    addItemBtn.addEventListener('click', () => createLineItemRow());
+  }
+
+  // Input Listeners for Calculations
+  if (discountInput) discountInput.addEventListener('input', updateGrandTotals);
+  if (advancePaidInput) advancePaidInput.addEventListener('input', updateGrandTotals);
+
+  // Live input updates if preview is already visible
+  [invNoInput, invDateInput, custNameInput, custMobileInput, custVillageInput, notesInput].forEach((inp) => {
+    if (inp) {
+      inp.addEventListener('input', () => {
+        if (invoicePreviewWrapper && invoicePreviewWrapper.style.display !== 'none') {
+          renderLiveInvoicePreview();
+        }
+      });
+    }
+  });
+
+  // Generate Bill Button Click: Validate -> Render -> Reveal Preview & Scroll
+  if (btnGenerateInv) {
+    btnGenerateInv.addEventListener('click', async () => {
+      const data = getFormData();
+      const hasValidItem = data.items.some((it) => it.qty > 0 && it.rate > 0);
+
+      if (!data.customerName && !hasValidItem) {
+        alert('कृपया आधी ग्राहकाचे नाव किंवा किमान एका साहित्याचा तपशील (प्रमाण व दर) भरा.');
+        return;
+      }
+
+      await renderLiveInvoicePreview();
+      if (invoicePreviewWrapper) {
+        invoicePreviewWrapper.style.display = 'block';
+        invoicePreviewWrapper.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+
+  // Edit Button Click: Smooth scroll back up to form
+  if (btnEditInv) {
+    btnEditInv.addEventListener('click', () => {
+      if (invFormCard) {
+        invFormCard.scrollIntoView({ behavior: 'smooth' });
+        const targetInput = custNameInput || invFormCard.querySelector('input:not([readonly])');
+        if (targetInput) targetInput.focus();
+      }
+    });
+  }
+
+  // Actions on Preview Card
   if (btnShareWa) btnShareWa.addEventListener('click', shareInvoice);
   if (btnDownloadPng) btnDownloadPng.addEventListener('click', downloadInvoicePng);
   if (btnSaveInv) btnSaveInv.addEventListener('click', saveInvoiceToHistory);
   if (btnResetForm) btnResetForm.addEventListener('click', resetForm);
 
+  // History Search Input
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       renderHistoryList(e.target.value);
     });
   }
 
+  // Backup Export & Import
   if (btnExportBackup) btnExportBackup.addEventListener('click', exportBackup);
   if (btnImportBackup && fileImportInput) {
     btnImportBackup.addEventListener('click', () => fileImportInput.click());
@@ -639,7 +801,7 @@ export function initInvoiceModule(getCurrentLang) {
     });
   }
 
-  // Initialize form with defaults
+  // Initialize form to blank state
   resetForm();
 
   return {
