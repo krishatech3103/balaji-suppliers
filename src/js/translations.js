@@ -9,6 +9,7 @@ export const translations = {
     nav_quote: "कोटेशन तयार करा",
     nav_why_us: "आमची वैशिष्ट्ये",
     nav_contact: "संपर्क व पत्ता",
+    nav_owner: "मालक विभाग (Owner)",
     call_now: "थेट कॉल करा",
 
     // Hero Section
@@ -213,6 +214,7 @@ export const translations = {
     nav_quote: "Get Quote",
     nav_why_us: "Why Us",
     nav_contact: "Contact & Location",
+    nav_owner: "Owner Panel",
     call_now: "Call Now",
 
     // Hero Section

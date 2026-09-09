@@ -100,26 +100,73 @@ function setupScrollAnimations() {
   });
 }
 
-// Smooth scrolling and mobile nav toggle
+// Smooth scrolling and mobile nav drawer
 function setupNavigation() {
   const mobileNavToggle = document.getElementById('mobile-menu-toggle');
+  const drawer = document.getElementById('mobile-nav-drawer');
+  const backdrop = document.getElementById('nav-drawer-backdrop');
+  const closeBtn = document.getElementById('btn-close-drawer');
+  const drawerLinks = document.querySelectorAll('.drawer-nav-link');
   const navLinksList = document.getElementById('nav-links');
 
-  if (mobileNavToggle && navLinksList) {
-    mobileNavToggle.addEventListener('click', () => {
-      const isExpanded = mobileNavToggle.getAttribute('aria-expanded') === 'true';
-      mobileNavToggle.setAttribute('aria-expanded', !isExpanded);
-      navLinksList.classList.toggle('open');
-    });
+  function openDrawer() {
+    drawer?.classList.add('active');
+    backdrop?.classList.add('active');
+    document.body.classList.add('menu-open');
+    mobileNavToggle?.setAttribute('aria-expanded', 'true');
+    drawer?.setAttribute('aria-hidden', 'false');
+  }
 
-    // Close mobile nav when clicking a link
-    navLinksList.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        navLinksList.classList.remove('open');
-        mobileNavToggle.setAttribute('aria-expanded', 'false');
-      });
+  function closeDrawer() {
+    drawer?.classList.remove('active');
+    backdrop?.classList.remove('active');
+    document.body.classList.remove('menu-open');
+    mobileNavToggle?.setAttribute('aria-expanded', 'false');
+    drawer?.setAttribute('aria-hidden', 'true');
+    navLinksList?.classList.remove('open');
+  }
+
+  if (mobileNavToggle) {
+    mobileNavToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = drawer?.classList.contains('active');
+      if (isOpen) {
+        closeDrawer();
+      } else {
+        openDrawer();
+      }
     });
   }
+
+  closeBtn?.addEventListener('click', closeDrawer);
+  backdrop?.addEventListener('click', closeDrawer);
+
+  // Close drawer when clicking any link inside it
+  drawerLinks.forEach((link) => {
+    link.addEventListener('click', (e) => {
+      closeDrawer();
+      if (link.id === 'drawer-owner-link') {
+        e.preventDefault();
+        if (window.location.hash === '#owner') {
+          window.dispatchEvent(new HashChangeEvent('hashchange'));
+        } else {
+          window.location.hash = 'owner';
+        }
+      }
+    });
+  });
+
+  // Desktop nav links close mobile menu if opened
+  navLinksList?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', closeDrawer);
+  });
+
+  // Close drawer on Escape key
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && drawer?.classList.contains('active')) {
+      closeDrawer();
+    }
+  });
 
   // Header scroll shadow
   const header = document.getElementById('site-header');
