@@ -1,0 +1,20 @@
+{
+  "name": "balaji-building-material-supplier",
+  "version": "1.0.0",
+  "description": "Production-ready static website and PWA for Balaji Building Material Supplier, Tasgaon",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "html2canvas": "^1.4.1",
+    "qrcode": "^1.5.4"
+  },
+  "devDependencies": {
+    "sharp": "^0.35.4",
+    "vite": "^5.4.14"
+  }
+}
