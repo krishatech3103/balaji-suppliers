@@ -2,7 +2,7 @@
 export const translations = {
   mr: {
     // Top Bar & Navigation
-    brand_name: "बालाजी बिल्डिंग मटेरियल",
+    brand_name: "बालाजी बिल्डिंग मटेरियल सप्लायर्स",
     brand_tagline: "तासगाव, जि. सांगली",
     nav_home: "मुख्य पान",
     nav_materials: "बांधकाम साहित्य",
@@ -63,7 +63,7 @@ export const translations = {
     quote_total_volume: "एकूण प्रमाण:",
     quote_send_whatsapp: "WhatsApp वर कोटेशन विनंती पाठवा",
     quote_help_note: "आमच्याकडे टिप्पर आणि डंपरद्वारे थेट जागेवर माल उतरवून देण्याची सुविधा उपलब्ध आहे.",
-    quote_wa_greeting: "नमस्कार बालाजी बिल्डिंग मटेरियल,",
+    quote_wa_greeting: "नमस्कार बालाजी बिल्डिंग मटेरियल सप्लायर्स,",
     quote_wa_req_text: "मला खालील बांधकाम साहित्याचा वाहतुकीसह दर हवा आहे:",
     quote_wa_name: "नाव",
     quote_wa_location: "ठिकाण",
@@ -85,7 +85,7 @@ export const translations = {
     contact_title: "संपर्क व ठिकाण",
     contact_subtitle: "कोणत्याही चौकशीसाठी किंवा थेट ऑर्डर्ससाठी आजच संपर्क साधा",
     contact_address_label: "पत्ता:",
-    contact_address_val: "बालाजी बिल्डिंग मटेरियल सप्लायर्स, तासगाव, जि. सांगली, महाराष्ट्र - ४१६३१२",
+    contact_address_val: "बालाजी बिल्डिंग मटेरियल सप्लायर्स , तासगाव, जि. सांगली, महाराष्ट्र - ४१६३१२",
     contact_phone_label: "मोबाईल नंबर:",
     contact_whatsapp_label: "व्हॉट्सॲप:",
     contact_insta_label: "इन्स्टाग्राम (Instagram):",
@@ -110,7 +110,7 @@ export const translations = {
     footer_desc: "तासगाव परिसरातील सर्व प्रकारच्या बांधकामासाठी दर्जेदार वाळू, खडी, डस्ट सँड व वॉश वाळू पुरवठादार.",
     footer_quick_links: "जलद लिंक्स",
     footer_materials_list: "साहित्य यादी",
-    footer_copyright: "© २०२६ बालाजी बिल्डिंग मटेरियल सप्लायर्स, तासगाव. सर्व हक्क राखीव.",
+    footer_copyright: "© २०२६ बालाजी बिल्डिंग मटेरियल सप्लायर्स , तासगाव. सर्व हक्क राखीव.",
     footer_owner_hint: "गोपनीय मालक विभाग",
 
     // Owner Auth Modal
@@ -165,8 +165,8 @@ export const translations = {
     inv_btn_reset: "नवीन फॉर्म",
 
     // Invoice Preview Template Labels (Pure Marathi Only)
-    bill_top_heading: "|| श्री दारेश्वर प्रसन्न ||",
-    bill_firm_name: "बालाजी बिल्डिंग मटेरियल सप्लायर्स",
+    bill_top_heading: "|| श्री दरेश्वर प्रसन्न ||",
+    bill_firm_name: "बालाजी बिल्डिंग मटेरियल सप्लायर्स ",
     bill_firm_name_en: "",
     bill_firm_address: "तासगाव, जि. सांगली, महाराष्ट्र - ४१६३१२",
     bill_firm_phone: "मोबाईल: +91 8484029427",
@@ -191,7 +191,7 @@ export const translations = {
     bill_upi_id_text: "UPI नंबर: 8484029427",
     bill_terms_1: "१. मालाचे मोजमाप गाडी जागेवर असतानाच करून घ्यावे.",
     bill_terms_2: "२. एकदा माल खाली केल्यावर कोणतीही तक्रार ग्राह्य धरली जाणार नाही.",
-    bill_signatory: "बालाजी बिल्डिंग मटेरियल करिता (स्वाक्षरी)",
+    bill_signatory: "बालाजी बिल्डिंग मटेरियल सप्लायर्स करिता (स्वाक्षरी)",
 
     // History & Backup
     hist_modal_title: "मागील बिलांचा इतिहास",
@@ -382,8 +382,8 @@ export const translations = {
     inv_btn_reset: "New Form",
 
     // Invoice Preview Template Labels (Pure Marathi Only)
-    bill_top_heading: "|| श्री दारेश्वर प्रसन्न ||",
-    bill_firm_name: "बालाजी बिल्डिंग मटेरियल सप्लायर्स",
+    bill_top_heading: "|| श्री दरेश्वर प्रसन्न ||",
+    bill_firm_name: "बालाजी बिल्डिंग मटेरियल सप्लायर्स ",
     bill_firm_name_en: "",
     bill_firm_address: "तासगाव, जि. सांगली, महाराष्ट्र - ४१६३१२",
     bill_firm_phone: "मोबाईल: +91 8484029427",
@@ -408,7 +408,7 @@ export const translations = {
     bill_upi_id_text: "UPI नंबर: 8484029427",
     bill_terms_1: "१. मालाचे मोजमाप गाडी जागेवर असतानाच करून घ्यावे.",
     bill_terms_2: "२. एकदा माल खाली केल्यावर कोणतीही तक्रार ग्राह्य धरली जाणार नाही.",
-    bill_signatory: "बालाजी बिल्डिंग मटेरियल करिता (स्वाक्षरी)",
+    bill_signatory: "बालाजी बिल्डिंग मटेरियल सप्लायर्स करिता (स्वाक्षरी)",
 
     // History & Backup
     hist_modal_title: "Invoice History",

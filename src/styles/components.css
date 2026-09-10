@@ -53,6 +53,7 @@
   font-weight: 800;
   color: var(--secondary);
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .brand-subtitle {
@@ -2058,12 +2059,11 @@ body.menu-open {
   }
 
   .brand-title {
-    font-size: 0.95rem;
+    font-size: clamp(0.82rem, 3.3vw, 0.95rem);
     line-height: 1.2;
-    max-width: 145px;
+    max-width: none;
     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    overflow: visible;
   }
 
   .brand-subtitle {
@@ -2475,8 +2475,8 @@ body.menu-open {
   }
 
   .brand-title {
-    max-width: 115px;
-    font-size: 0.9rem;
+    max-width: none;
+    font-size: clamp(0.76rem, 3.1vw, 0.86rem);
   }
 
   .header-actions {

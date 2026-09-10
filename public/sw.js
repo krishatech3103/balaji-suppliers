@@ -1,5 +1,5 @@
 // Balaji Building Material Supplier - Hand-written PWA Service Worker
-const CACHE_VERSION = 'bbms-v1.1.0';
+const CACHE_VERSION = 'bbms-v1.2.0';
 const CACHE_NAME = `bbms-cache-${CACHE_VERSION}`;
 
 // Core static assets to precache immediately on install
