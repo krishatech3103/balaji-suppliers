@@ -63,7 +63,7 @@ export async function renderUpiQrToCanvas(canvas, upiUri, size = 180) {
     ctx.font = 'bold 12px sans-serif';
     ctx.textAlign = 'center';
     ctx.fillText('UPI QR CODE', size / 2, size / 2 - 10);
-    ctx.fillText('UPI: 7083330914', size / 2, size / 2 + 15);
+    ctx.fillText('UPI: 8484029427', size / 2, size / 2 + 15);
     return false;
   }
 }

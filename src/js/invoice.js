@@ -565,7 +565,7 @@ export function initInvoiceModule(getCurrentLang) {
     shareSummaryText += `${mrT.bill_lbl_grandtotal} ₹${data.grandTotal.toLocaleString('en-IN')}\n` +
       `${mrT.bill_lbl_advance} ₹${data.advancePaid.toLocaleString('en-IN')}\n` +
       `*${mrT.bill_lbl_balance} ₹${data.balanceDue.toLocaleString('en-IN')}*\n` +
-      `UPI नंबर: 7083330914`;
+      `UPI नंबर: 8484029427`;
 
     // Try Web Share API with files (Android Chrome, iOS Safari)
     if (navigator.canShare && navigator.canShare({ files: [file] })) {

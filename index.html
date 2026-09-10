@@ -1026,7 +1026,7 @@
                 <div class="bill-qr-box">
                   <canvas id="bill-qr-canvas" class="bill-qr-canvas"></canvas>
                   <div class="bill-qr-label" data-i18n="bill_upi_heading">UPI QR कोड - स्कॅन करून पैसे भरा</div>
-                  <div class="bill-upi-id-print" data-i18n="bill_upi_id_text">UPI नंबर: 7083330914</div>
+                  <div class="bill-upi-id-print" data-i18n="bill_upi_id_text">UPI नंबर: 8484029427</div>
                 </div>
               </div>
 
@@ -1048,72 +1048,71 @@
   </div>
 
   <!-- POPUP MODAL 1: INVOICE HISTORY -->
-    <div class="modal-backdrop owner-submodal" id="owner-history-modal" aria-hidden="true" role="dialog">
-      <div class="modal-card owner-submodal-card">
-        <div class="modal-header owner-submodal-header">
-          <div style="display: flex; align-items: center; gap: 0.65rem;">
-            <span style="font-size: 1.35rem;">📋</span>
-            <h3 class="modal-title" style="margin: 0;" data-i18n="hist_modal_title">मागील बिलांचा इतिहास</h3>
-          </div>
-          <button type="button" class="btn-close-submodal" id="btn-close-hist-modal"
-            aria-label="Close History">✕</button>
+  <div class="modal-backdrop owner-submodal" id="owner-history-modal" aria-hidden="true" role="dialog">
+    <div class="modal-card owner-submodal-card">
+      <div class="modal-header owner-submodal-header">
+        <div style="display: flex; align-items: center; gap: 0.65rem;">
+          <span style="font-size: 1.35rem;">📋</span>
+          <h3 class="modal-title" style="margin: 0;" data-i18n="hist_modal_title">मागील बिलांचा इतिहास</h3>
         </div>
+        <button type="button" class="btn-close-submodal" id="btn-close-hist-modal" aria-label="Close History">✕</button>
+      </div>
 
-        <div class="history-stats-bar">
-          <div class="hist-stat-card">
-            <span data-i18n="hist_total_invoices">एकूण बिलांची संख्या:</span>
-            <strong id="stat-total-invoices">0</strong>
-          </div>
-          <div class="hist-stat-card">
-            <span data-i18n="hist_total_billed">एकूण बिल रक्कम:</span>
-            <strong id="stat-total-billed">₹0</strong>
-          </div>
-          <div class="hist-stat-card">
-            <span data-i18n="hist_total_pending">एकूण येणे शिल्लक:</span>
-            <strong id="stat-total-pending" style="color: #ea580c;">₹0</strong>
-          </div>
+      <div class="history-stats-bar">
+        <div class="hist-stat-card">
+          <span data-i18n="hist_total_invoices">एकूण बिलांची संख्या:</span>
+          <strong id="stat-total-invoices">0</strong>
         </div>
-
-        <div class="hist-search-box">
-          <input type="text" id="hist-search-input" class="form-input" data-i18n-placeholder="hist_search_placeholder"
-            placeholder="ग्राहकाचे नाव, मोबाईल किंवा बिल क्र. शोधा...">
+        <div class="hist-stat-card">
+          <span data-i18n="hist_total_billed">एकूण बिल रक्कम:</span>
+          <strong id="stat-total-billed">₹0</strong>
         </div>
+        <div class="hist-stat-card">
+          <span data-i18n="hist_total_pending">एकूण येणे शिल्लक:</span>
+          <strong id="stat-total-pending" style="color: #ea580c;">₹0</strong>
+        </div>
+      </div>
 
-        <div class="hist-cards-grid" id="hist-list-container">
-          <!-- Populated dynamically via JS -->
+      <div class="hist-search-box">
+        <input type="text" id="hist-search-input" class="form-input" data-i18n-placeholder="hist_search_placeholder"
+          placeholder="ग्राहकाचे नाव, मोबाईल किंवा बिल क्र. शोधा...">
+      </div>
+
+      <div class="hist-cards-grid" id="hist-list-container">
+        <!-- Populated dynamically via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- POPUP MODAL 2: DATA BACKUP -->
+  <div class="modal-backdrop owner-submodal" id="owner-backup-modal" aria-hidden="true" role="dialog">
+    <div class="modal-card owner-submodal-card backup-submodal-card">
+      <div class="modal-header owner-submodal-header">
+        <div style="display: flex; align-items: center; gap: 0.65rem;">
+          <span style="font-size: 1.35rem;">💾</span>
+          <h3 class="modal-title" style="margin: 0;" data-i18n="owner_tab_backup">डेटा बॅकअप</h3>
+        </div>
+        <button type="button" class="btn-close-submodal" id="btn-close-backup-modal"
+          aria-label="Close Backup">✕</button>
+      </div>
+
+      <div class="backup-card" style="margin: 0; box-shadow: none; border: none; padding: 1rem 0;">
+        <p data-i18n="hist_backup_note" style="margin-bottom: 1.5rem;">सर्व डेटा तुमच्या डिव्हाइसवर सुरक्षित आहे. फोन
+          बदलताना बॅकअप फाइल सेव्ह करून ठेवा.</p>
+
+        <div class="backup-actions">
+          <button type="button" class="btn btn-primary" id="btn-export-backup" data-i18n="hist_export_btn">
+            बॅकअप फाइल डाऊनलोड करा (Export JSON)
+          </button>
+
+          <input type="file" id="file-import-input" accept=".json" style="display:none;">
+          <button type="button" class="btn btn-outline" id="btn-import-backup" data-i18n="hist_import_btn">
+            बॅकअप रिस्टोअर करा (Import JSON)
+          </button>
         </div>
       </div>
     </div>
-
-    <!-- POPUP MODAL 2: DATA BACKUP -->
-    <div class="modal-backdrop owner-submodal" id="owner-backup-modal" aria-hidden="true" role="dialog">
-      <div class="modal-card owner-submodal-card backup-submodal-card">
-        <div class="modal-header owner-submodal-header">
-          <div style="display: flex; align-items: center; gap: 0.65rem;">
-            <span style="font-size: 1.35rem;">💾</span>
-            <h3 class="modal-title" style="margin: 0;" data-i18n="owner_tab_backup">डेटा बॅकअप</h3>
-          </div>
-          <button type="button" class="btn-close-submodal" id="btn-close-backup-modal"
-            aria-label="Close Backup">✕</button>
-        </div>
-
-        <div class="backup-card" style="margin: 0; box-shadow: none; border: none; padding: 1rem 0;">
-          <p data-i18n="hist_backup_note" style="margin-bottom: 1.5rem;">सर्व डेटा तुमच्या डिव्हाइसवर सुरक्षित आहे. फोन
-            बदलताना बॅकअप फाइल सेव्ह करून ठेवा.</p>
-
-          <div class="backup-actions">
-            <button type="button" class="btn btn-primary" id="btn-export-backup" data-i18n="hist_export_btn">
-              बॅकअप फाइल डाऊनलोड करा (Export JSON)
-            </button>
-
-            <input type="file" id="file-import-input" accept=".json" style="display:none;">
-            <button type="button" class="btn btn-outline" id="btn-import-backup" data-i18n="hist_import_btn">
-              बॅकअप रिस्टोअर करा (Import JSON)
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+  </div>
 
   <!-- Application Entry Point -->
   <script type="module" src="/src/js/main.js"></script>

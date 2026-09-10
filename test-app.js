@@ -112,7 +112,7 @@ const indexHtml = fs.readFileSync(path.join(distDir, 'index.html'), 'utf-8');
 const checks = [
   { name: 'LocalBusiness JSON-LD schema', test: indexHtml.includes('"@type": "LocalBusiness"') },
   { name: 'Updated phone number +918484029427 (single, no duplicate)', test: indexHtml.includes('+91 8484029427') && !indexHtml.includes('8484029427 | 8484029427') },
-  { name: 'UPI number 7083330914', test: indexHtml.includes('7083330914') },
+  { name: 'UPI number 8484029427', test: indexHtml.includes('8484029427') },
   { name: 'Mantra || श्री दारेश्वर प्रसन्न ||', test: indexHtml.includes('श्री दारेश्वर प्रसन्न') && !indexHtml.includes('महालक्ष्मी') },
   { name: 'Professional Marathi invoice header (इन्व्हॉइस / बिल)', test: indexHtml.includes('इन्व्हॉइस / बिल (INVOICE)') && !indexHtml.includes('कच्चे बिल') },
   { name: 'Vehicle photo & fleet showcase (no specific vehicle number)', test: indexHtml.includes('hero-truck.webp') && indexHtml.includes('delivery-vehicle.webp') && !indexHtml.includes('MH 50 7410') },

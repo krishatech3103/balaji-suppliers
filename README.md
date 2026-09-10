@@ -12,7 +12,7 @@ Runs 100% client-side with no backend or database required, fully deployable to 
 - **Location:** Tasgaon, Dist. Sangli, Maharashtra, India - 416312
 - **Phone / WhatsApp:** [+91 8484029427](tel:+918484029427)
 - **WhatsApp Link:** [https://wa.me/918484029427](https://wa.me/918484029427)
-- **UPI Number:** `7083330914` (ID: `pujarisudip5@okaxis`)
+- **UPI Number:** `8484029427` (ID: `pujarisudip5@okaxis`)
 - **Products (Sold per Brass):**
   1. Sand (वाळू - River Sand)
   2. Khadi / Crushed Aggregate (खडी - 10mm, 20mm, 40mm)
